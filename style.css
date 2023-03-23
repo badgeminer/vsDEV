@@ -3,7 +3,9 @@ html {
   width: 100%;
 }
 
+
 body {
+  margin: 0;
   font-family: 'Space Mono', monospace;
   background-color: black;
   color: white;
