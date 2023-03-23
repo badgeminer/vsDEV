@@ -3,7 +3,6 @@ let c = null
 function clear() {
   ctx.fillStyle = "#000000";
   ctx.fillRect(-5, -5, ctx.canvas.width + 5, 5 + ctx.canvas.height);
-  //ctx.fill()
   //ctx.drawImage(Game.assets.stars, bgx, bgy);
 };
 var bgx = 0;
@@ -11,15 +10,12 @@ var bgy = 0;
 let bgs = 0;
 var bgdx = 0.2;
 var bgdy = 0.1;
-
 var build = {
   heal: 1,
   research: 2,
   top: 4,
   bottom: 8
 }
-
-
 const hud = {
   money: {
     hudX: 10,
@@ -86,8 +82,8 @@ function sector(sd, sx, sy, w, h,res) {
     ex: w, ey: h,
     res:res
     
-  }
-}
+  };
+};
 
 var Game = {
   money: 500,
@@ -104,21 +100,18 @@ var Game = {
       }
     }
   },
-
-}
-var map = {}
+};
+var map = {};
 function isClickd(obj, x, y) {
   //console.log((obj.sx < x))
   //console.log((obj.sy < y))
   //console.log((obj.ex > x))
   //console.log((obj.ey > y))
   if ((obj.sx < x) & (obj.sy < y) & (obj.ex > x) & (obj.ey > y)) {
-
-    return true
-
-  }
-  return false
-}
+    return true;
+  };
+  return false;
+};
 
 function ui() {
   ctx.drawImage(Game.assets.dev, 100, 10);
@@ -127,10 +120,7 @@ function ui() {
   }
 };
 
-
-
 function Map() {
-
   for (const prprty in map) {
     rect = map[prprty]
     //console.log(rect)
@@ -146,9 +136,7 @@ function Map() {
     }
     ctx.strokeRect(rect.sx, rect.sy, rect.ex, rect.ey);
   };
-
-
-}
+};
 
 function getCursorPosition(canvas, event) {
   const rect = canvas.getBoundingClientRect()
@@ -158,13 +146,12 @@ function getCursorPosition(canvas, event) {
   for (const property in Game.clicks) {
     if (isClickd(Game.clicks[property], x, y)) {
       Game.clicks[property].act()
-    }
-  }
-}
+    };
+  };
+};
 
 var cpx = 0;
 var cpy = 0;
-
 var cwth = 0
 
 window.onload = function() {
@@ -186,11 +173,9 @@ window.onload = function() {
   ui();
   cwth = c.width
   canvas.addEventListener("mousemove", function(e) {
-    var cRect = canvas.getBoundingClientRect();        // Gets CSS pos, and width/height
-    cpx = Math.round(e.clientX - cRect.left);  // Subtract the 'left' of the canvas 
-    cpy = Math.round(e.clientY - cRect.top);   // from the X/Y positions to make  
-    //ctx.clearRect(0, 0, canvas.width, canvas.height);  // (0,0) the top left of the canvas
-    //ctx.fillText("X: " + canvasX + ", Y: " + canvasY, 10, 20);
+    var cRect = canvas.getBoundingClientRect();
+    cpx = Math.round(e.clientX - cRect.left); 
+    cpy = Math.round(e.clientY - cRect.top); 
   });
   var resea = 0;
   var GI = 0;
@@ -199,20 +184,20 @@ window.onload = function() {
       resea = 0;
       if (((I-4)%2 == 0)&(p%5 == 0)) {
         resea = resea | build.research;
-      }
+      };
+      if (((I-4)%4 == 0)&(p%6 == 0)) {
+        resea = resea | build.heal;
+      };
       map[GI] = sector((I-4), (10 + (I * 25)), (50 + (p * 25)), 25, 25,resea);
       GI++;
-    }
-  }
+    };
+  };
   interv = setInterval(function() {
     clear();
-    
     Map();
     ui();
-
-  }, 50)
-}
-
+  }, 50);
+};
 var cash = setInterval(function() {
     for (const prprty in map) {
       rect = map[prprty]
@@ -220,4 +205,4 @@ var cash = setInterval(function() {
         Game.money++
       }
     }
-  }, 1000)
+  }, 1000);
