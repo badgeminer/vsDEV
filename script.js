@@ -12,6 +12,14 @@ let bgs = 0;
 var bgdx = 0.2;
 var bgdy = 0.1;
 
+var build = {
+  heal: 1,
+  research: 2,
+  top: 4,
+  bottom: 8
+}
+
+
 const hud = {
   money: {
     hudX: 10,
@@ -71,11 +79,13 @@ const hud = {
     }
   }
 }
-function sector(sd, sx, sy, w, h) {
+function sector(sd, sx, sy, w, h,res) {
   return {
     sd: sd,
     sx: sx, sy: sy,
-    ex: w, ey: h
+    ex: w, ey: h,
+    res:res
+    
   }
 }
 
@@ -125,12 +135,15 @@ function Map() {
     rect = map[prprty]
     //console.log(rect)
     ctx.strokeStyle = '#000000';
-    if (rect.sd == 0) {
+    if (rect.sd <= 0) {
       ctx.fillStyle = '#009933';
     } else {
       ctx.fillStyle = '#ff0000';
     };
     ctx.fillRect(rect.sx, rect.sy, rect.ex, rect.ey);
+    if (rect.res& build.research) {
+      ctx.drawImage(Game.assets.res, rect.sx, rect.sy);
+    }
     ctx.strokeRect(rect.sx, rect.sy, rect.ex, rect.ey);
   };
 
@@ -179,11 +192,15 @@ window.onload = function() {
     //ctx.clearRect(0, 0, canvas.width, canvas.height);  // (0,0) the top left of the canvas
     //ctx.fillText("X: " + canvasX + ", Y: " + canvasY, 10, 20);
   });
-
+  var resea = 0;
   var GI = 0;
   for (let I = 0; I < 10; I++) {
     for (let p = 0; p < 15; p++) {
-      map[GI] = sector((p + I) % 1, (10 + (I * 25)), (50 + (p * 25)), 25, 25);
+      resea = 0;
+      if (((I-4)%2 == 0)&(p%5 == 0)) {
+        resea = resea | build.research;
+      }
+      map[GI] = sector((I-4), (10 + (I * 25)), (50 + (p * 25)), 25, 25,resea);
       GI++;
     }
   }
